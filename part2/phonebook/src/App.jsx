@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import PersonFilter from './components/PersonFilter'
+import PersonService from './services/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,15 +10,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
 
-  const baseUrl = 'http://localhost:3001/persons'
-
   useEffect(() => {
-    console.log('Effect')
-    axios
-      .get(baseUrl)
-      .then(response => {
-        console.log('Promise fulfilled')
-        setPersons(response.data)
+    PersonService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
       .catch(error => {
         console.error('Error fetching persons:', error)
@@ -51,22 +47,77 @@ const App = () => {
       return
     }
 
-    if (persons.some(p => p.name.toLowerCase() === normalizedName)) {
+    const existingPerson = persons.find(
+      p => p.name.toLowerCase() === normalizedName
+    )
+
+    if (existingPerson) {
+      if (existingPerson.number !== trimmedNumber) {
+        const confirmUpdate = window.confirm(`${existingPerson.name} is already added to the phonebook. Replace the old number with the new one?`)
+        if (!confirmUpdate) {
+          return
+        }
+
+        const updatedPerson = {
+          ...existingPerson,
+          number: trimmedNumber
+        }
+
+        PersonService
+          .update(existingPerson.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(prev =>
+              prev.map(person => person.id === existingPerson.id ? returnedPerson : person)
+            )
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            alert(`${existingPerson.name} was already removed from server`)
+            setPersons(prev =>
+              prev.filter(p => p.id !== existingPerson.id)
+            )
+          })
+
+        return
+      }
       alert(`${trimmedName} is already added to the phonebook`)
       return
     }
 
-    const nextId = persons.reduce((maxId, p) => Math.max(maxId, p.id), 0) + 1
-
     const personObject = {
       name: trimmedName,
-      number: trimmedNumber,
-      id: nextId
+      number: trimmedNumber
     }
 
-    setPersons(prev => prev.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+    PersonService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(prev => prev.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+      .catch(error => {
+        console.error('Error creating person:', error)
+        alert('Failed to save person to server')
+      })
+  }
+
+  const handleDeletePerson = (person) => {
+    const confirmDelete = window.confirm(`Delete ${person.name}?`)
+    if (!confirmDelete) {
+      return
+    }
+
+    PersonService
+      .remove(person.id)
+      .then(() => {
+        setPersons(prev => prev.filter(p => p.id !== person.id))
+      })
+      .catch(error => {
+        console.error('Error deleting person:', error)
+        alert(`Failed to delete ${person.name} from server`)
+      })
   }
 
   return (
@@ -85,7 +136,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} onDeletePerson={handleDeletePerson} />
     </div>
   )
 }
