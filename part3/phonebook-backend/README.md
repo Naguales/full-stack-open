@@ -14,7 +14,7 @@ It demonstrates:
 * Route parameters for fetching and deleting single resources
 * Returning dynamic server info (entry count + request timestamp)
 
-## Features implemented (3.1-3.8)
+## Features implemented (3.1-3.11)
 
 * `GET /api/persons` returns all phonebook entries
 * `GET /info` returns phonebook size and current server time
@@ -27,6 +27,9 @@ It demonstrates:
   * name must be unique
 * Request logging with morgan (`tiny` style fields)
 * POST request body logging using a custom morgan token (`JSON.stringify(req.body)`)
+* Frontend (Part 2 Phonebook) connected to backend via `/api/persons`
+* Vite development proxy support for local frontend development (`localhost:5173 -> localhost:3001`)
+* Frontend production build served by backend from `dist/`
 * Validation errors return `400` with JSON, for example:
 
 ```json
@@ -46,6 +49,19 @@ http://localhost:3001
 * `POST /api/persons`
 * `DELETE /api/persons/:id`
 * `GET /info`
+
+## Full Stack Build (3.11)
+
+Build frontend and copy it into backend `dist`:
+
+```bash
+cd ../../part2/phonebook
+npm run build
+cd ../../part3/phonebook-backend
+cp -r ../../part2/phonebook/dist ./dist
+```
+
+When deployed, backend serves the built frontend and API from the same origin.
 
 ## Logging
 

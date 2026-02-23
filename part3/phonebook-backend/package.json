@@ -9,6 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
+    "build:ui": "rm -rf dist && npm --prefix ../../part2/phonebook run build && cp -r ../../part2/phonebook/dist ./dist",
+    "deploy:full": "npm run build:ui && git add . && git commit -m \"uibuild\" && git push",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
