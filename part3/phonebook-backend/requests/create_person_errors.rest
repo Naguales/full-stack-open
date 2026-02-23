@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:3001
+
+### 3.6 - Missing name (expected: 400, { "error": "name is missing" })
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "number": "111-222333"
+}
+
+### 3.6 - Missing number (expected: 400, { "error": "number is missing" })
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "No Number"
+}
+
+### 3.6 - Duplicate name (expected: 400, { "error": "name must be unique" })
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "Arto Hellas",
+  "number": "999-999999"
+}
+

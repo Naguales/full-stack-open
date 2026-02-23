@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3001
+
+### 3.5 - Create a new person (expected: 201)
+POST {{baseUrl}}/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bruce Li",
+  "number": "777-777777"
+}
+
+### Verify created person appears in list
+GET {{baseUrl}}/api/persons
+Accept: application/json
+

@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:3001
+
+### 3.4 - Delete one person (expected: 204)
+DELETE {{baseUrl}}/api/persons/2
+
+### Verify deleted person is missing (expected: 404)
+GET {{baseUrl}}/api/persons/2
+Accept: application/json
+
+### Verify list still works after delete
+GET {{baseUrl}}/api/persons
+Accept: application/json
+
