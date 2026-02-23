@@ -8,12 +8,13 @@ It demonstrates:
 
 * Building an HTTP API with **Express**
 * Parsing JSON request bodies with `express.json()`
+* Logging HTTP requests with **morgan**
 * Returning correct HTTP status codes (`200`, `201`, `204`, `400`, `404`)
 * Basic server-side validation and error responses
 * Route parameters for fetching and deleting single resources
 * Returning dynamic server info (entry count + request timestamp)
 
-## Features implemented (3.1-3.6)
+## Features implemented (3.1-3.8)
 
 * `GET /api/persons` returns all phonebook entries
 * `GET /info` returns phonebook size and current server time
@@ -24,6 +25,8 @@ It demonstrates:
   * name is required
   * number is required
   * name must be unique
+* Request logging with morgan (`tiny` style fields)
+* POST request body logging using a custom morgan token (`JSON.stringify(req.body)`)
 * Validation errors return `400` with JSON, for example:
 
 ```json
@@ -43,6 +46,17 @@ http://localhost:3001
 * `POST /api/persons`
 * `DELETE /api/persons/:id`
 * `GET /info`
+
+## Logging
+
+The backend uses `morgan` middleware with a custom format that includes:
+
+* method
+* URL
+* status
+* response size
+* response time
+* POST request body (for `POST` requests only)
 
 ## Run the project
 
@@ -76,4 +90,3 @@ Request files are included in `requests/`:
 * `requests/delete_person.rest`
 
 Open any `.rest` file in VS Code and click **Send Request** above a request block.
-
