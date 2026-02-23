@@ -42,6 +42,12 @@ It demonstrates:
 http://localhost:3001
 ```
 
+## Deployed Application
+Phonebook backend + frontend (served by backend on Render):
+```text
+https://full-stack-open-di4u.onrender.com
+```
+
 ## Endpoints
 
 * `GET /api/persons`
