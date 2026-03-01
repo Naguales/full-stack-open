@@ -1,0 +1,11 @@
+@baseUrl = http://localhost:3001
+
+### 3.17 - Update existing person's number (expected: 200)
+PUT {{baseUrl}}/api/persons/69a438cb723e781ee8df6203
+Content-Type: application/json
+
+{
+  "name": "Bruce Li",
+  "number": "77-77-77777"
+}
+

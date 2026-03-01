@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3001
 
 ### 3.3 - Get one existing person (expected: 200)
-GET {{baseUrl}}/api/persons/1
+GET {{baseUrl}}/api/persons/69a438e1723e781ee8df6207
 Accept: application/json
 
 ### 3.3 - Get missing person (expected: 404)

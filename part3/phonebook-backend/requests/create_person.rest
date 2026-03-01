@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "Bruce Li",
-  "number": "777-777777"
+  "number": "77-77-77777"
 }
 
 ### Verify created person appears in list
