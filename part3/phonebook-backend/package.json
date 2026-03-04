@@ -11,12 +11,24 @@
     "dev": "node --watch index.js",
     "build:ui": "rm -rf dist && npm --prefix ../../part2/phonebook install && npm --prefix ../../part2/phonebook run build && cp -r ../../part2/phonebook/dist ./dist",
     "deploy:full": "npm run build:ui && git add . && git commit -m \"uibuild\" && git push",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mongoose": "^8.19.3",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.9.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "globals": "^17.4.0"
   }
 }

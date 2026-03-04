@@ -16,7 +16,7 @@ It demonstrates:
 * Route parameters for fetching and deleting single resources
 * Returning dynamic server info (entry count + request timestamp)
 
-## Features implemented (3.1-3.18)
+## Features implemented (3.1-3.22)
 
 * `GET /api/persons` returns all phonebook entries
 * `GET /info` returns phonebook size and current server time
@@ -27,6 +27,10 @@ It demonstrates:
 * Validation for create:
   * name is required
   * number is required
+* Mongoose validations:
+  * `name` minimum length is 3 characters
+  * `number` minimum length is 8 characters
+  * `number` must match format `XX-XXXX...` or `XXX-XXXX...` (custom validator)
 * Request logging with morgan (`tiny` style fields)
 * POST request body logging using a custom morgan token (`JSON.stringify(req.body)`)
 * Frontend (Part 2 Phonebook) connected to backend via `/api/persons`
@@ -34,6 +38,7 @@ It demonstrates:
 * Frontend production build served by backend from `dist/`
 * Data for list/single person/info routes fetched directly from MongoDB
 * DB and cast/validation errors handled via Express error middleware
+* ESLint configured with Airbnb style guide and warnings fixed
 * Validation errors return `400` with JSON, for example:
 
 ```json
@@ -144,6 +149,7 @@ Request files are included in `requests/`:
 * `requests/get_person_by_id.rest`
 * `requests/create_person.rest`
 * `requests/create_person_errors.rest`
+* `requests/update_person_number.rest`
 * `requests/delete_person.rest`
 
 Open any `.rest` file in VS Code and click **Send Request** above a request block.

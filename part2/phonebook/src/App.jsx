@@ -104,7 +104,7 @@ const App = () => {
               return
             }
 
-            showNotification('Failed to update person', 'error')
+            showNotification(error.response?.data?.error || 'Failed to update person', 'error')
           })
 
         return
