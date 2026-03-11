@@ -79,11 +79,6 @@ MONGODB_URI=mongodb_connection_string
 PORT=3003
 ```
 
-Current defaults in `utils/config.js`:
-
-* `PORT=3003`
-* `MONGODB_URI=mongodb://localhost/bloglist`
-
 ## Run the project
 
 Install dependencies:
