@@ -36,6 +36,7 @@ It demonstrates:
 ├── models
 │   └── blog.js
 ├── tests
+│   ├── blog_api.test.js
 │   └── list_helper.test.js
 ├── utils
 │   ├── config.js
@@ -113,10 +114,21 @@ Automatically fix fixable lint issues:
 npm run lint:fix
 ```
 
-## Run tests (4.3-4.7)
+## Tests
+
+Run all tests:
 
 ```bash
 npm test
 ```
 
-The tests cover all helper functions in `utils/list_helper.js`.
+Current test coverage includes:
+
+* `tests/list_helper.test.js` for helper functions in `utils/list_helper.js`
+* `tests/blog_api.test.js` for the blog REST API using SuperTest
+
+Run a single test file:
+
+```bash
+npm test -- tests/blog_api.test.js
+```
