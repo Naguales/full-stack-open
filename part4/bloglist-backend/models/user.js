@@ -1,23 +1,26 @@
 const mongoose = require('mongoose');
 
-const blogSchema = new mongoose.Schema({
-  title: {
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    minlength: 3,
+    unique: true,
+  },
+  name: String,
+  passwordHash: {
     type: String,
     required: true,
   },
-  author: String,
-  url: {
-    type: String,
-    required: true,
-  },
-  likes: Number,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+  ],
 });
 
-blogSchema.set('toJSON', {
+userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     /* eslint-disable no-underscore-dangle */
     const formattedObject = {
@@ -27,10 +30,11 @@ blogSchema.set('toJSON', {
 
     delete formattedObject._id;
     delete formattedObject.__v;
+    delete formattedObject.passwordHash;
     /* eslint-enable no-underscore-dangle */
 
     return formattedObject;
   },
 });
 
-module.exports = mongoose.model('Blog', blogSchema);
+module.exports = mongoose.model('User', userSchema);

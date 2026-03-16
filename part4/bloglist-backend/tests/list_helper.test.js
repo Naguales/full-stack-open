@@ -64,52 +64,52 @@ const blogs = [
   },
 ];
 
-test('dummy returns one', () => {
+test('dummy returns 1', () => {
   const result = listHelper.dummy([]);
   assert.strictEqual(result, 1);
 });
 
-describe('total likes', () => {
-  test('of empty list is zero', () => {
+describe('totalLikes', () => {
+  test('returns 0 for an empty list', () => {
     const result = listHelper.totalLikes([]);
     assert.strictEqual(result, 0);
   });
 
-  test('when list has only one blog, equals the likes of that', () => {
+  test('returns the likes of the only blog in a single-item list', () => {
     const result = listHelper.totalLikes(listWithOneBlog);
     assert.strictEqual(result, 5);
   });
 
-  test('of a bigger list is calculated right', () => {
+  test('returns the sum of likes for a longer list', () => {
     const result = listHelper.totalLikes(blogs);
     assert.strictEqual(result, 36);
   });
 });
 
-describe('favorite blog', () => {
-  test('of empty list is null', () => {
+describe('favoriteBlog', () => {
+  test('returns null for an empty list', () => {
     const result = listHelper.favoriteBlog([]);
     assert.strictEqual(result, null);
   });
 
-  test('when list has only one blog, returns that blog', () => {
+  test('returns the only blog in a single-item list', () => {
     const result = listHelper.favoriteBlog(listWithOneBlog);
     assert.deepStrictEqual(result, listWithOneBlog[0]);
   });
 
-  test('of a bigger list is the blog with most likes', () => {
+  test('returns the blog with the highest number of likes', () => {
     const result = listHelper.favoriteBlog(blogs);
     assert.deepStrictEqual(result, blogs[2]);
   });
 });
 
-describe('most blogs', () => {
-  test('of empty list is null', () => {
+describe('mostBlogs', () => {
+  test('returns null for an empty list', () => {
     const result = listHelper.mostBlogs([]);
     assert.strictEqual(result, null);
   });
 
-  test('returns author with highest blog count', () => {
+  test('returns the author with the highest blog count', () => {
     const result = listHelper.mostBlogs(blogs);
     assert.deepStrictEqual(result, {
       author: 'Robert C. Martin',
@@ -118,13 +118,13 @@ describe('most blogs', () => {
   });
 });
 
-describe('most likes', () => {
-  test('of empty list is null', () => {
+describe('mostLikes', () => {
+  test('returns null for an empty list', () => {
     const result = listHelper.mostLikes([]);
     assert.strictEqual(result, null);
   });
 
-  test('returns author with highest total likes', () => {
+  test('returns the author with the highest total likes', () => {
     const result = listHelper.mostLikes(blogs);
     assert.deepStrictEqual(result, {
       author: 'Edsger W. Dijkstra',
