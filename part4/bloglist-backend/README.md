@@ -8,6 +8,8 @@ It demonstrates:
 
 * Building an HTTP API with **Express**
 * Persisting blog data with **MongoDB + Mongoose**
+* Managing users with hashed passwords using **bcrypt**
+* Token-based authentication with **JWT**
 * Organizing backend code with `app.js`, `index.js`, `controllers`, `models`, and `utils`
 * JSON request parsing with `express.json()`
 * Centralized request/error middleware
@@ -27,17 +29,33 @@ It demonstrates:
     * `mostBlogs`
     * `mostLikes`
   * Unit tests in `tests/list_helper.test.js`
+* **4.8-4.14**
+  * Blog API integration tests with **SuperTest**
+  * CRUD operations for blogs
+  * Validation for missing required blog fields
+* **4.15-4.23**
+  * User creation and listing via `/api/users`
+  * Password hashing with **bcrypt**
+  * Login and token-based authentication via `/api/login`
+  * Authenticated blog creation
+  * Blog ownership checks for deletion
+  * Populated user-blog relations in blog and user responses
 
 ## Project structure
 
 ```text
 ├── controllers
-│   └── blogs.js
+│   ├── blogs.js
+│   ├── login.js
+│   └── users.js
 ├── models
-│   └── blog.js
+│   ├── blog.js
+│   └── user.js
 ├── tests
 │   ├── blog_api.test.js
-│   └── list_helper.test.js
+│   ├── list_helper.test.js
+│   ├── test_helper.js
+│   └── user_api.test.js
 ├── utils
 │   ├── config.js
 │   ├── list_helper.js
@@ -59,6 +77,11 @@ http://localhost:3003
 
 * `GET /api/blogs`
 * `POST /api/blogs`
+* `DELETE /api/blogs/:id`
+* `PUT /api/blogs/:id`
+* `GET /api/users`
+* `POST /api/users`
+* `POST /api/login`
 
 Example `POST /api/blogs` body:
 
@@ -78,6 +101,7 @@ Create `.env` in project root (optional if using defaults):
 ```env
 MONGODB_URI=mongodb_connection_string
 PORT=3003
+SECRET=your_jwt_secret
 ```
 
 ## Run the project
@@ -126,6 +150,7 @@ Current test coverage includes:
 
 * `tests/list_helper.test.js` for helper functions in `utils/list_helper.js`
 * `tests/blog_api.test.js` for the blog REST API using SuperTest
+* `tests/user_api.test.js` for user creation, validation, and listing
 
 Run a single test file:
 
