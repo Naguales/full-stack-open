@@ -49,7 +49,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
       return response.status(404).end();
     }
 
-    if (blog.user.toString() !== user.id.toString()) {
+    if (!blog.user || blog.user.toString() !== user.id.toString()) {
       return response.status(403).json({ error: 'only the creator can delete a blog' });
     }
 
@@ -78,6 +78,10 @@ blogsRouter.put('/:id', async (request, response, next) => {
       return response.status(404).end();
     }
 
+    if (!blog.user) {
+      return response.status(400).json({ error: 'blog has no owner' })
+    }
+
     blog.title = request.body.title;
     blog.author = request.body.author;
     blog.url = request.body.url;
@@ -85,6 +89,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
 
     const updatedBlog = await blog.save();
     await updatedBlog.populate('user', { username: 1, name: 1 });
+    
     return response.json(updatedBlog);
   } catch (error) {
     return next(error);
