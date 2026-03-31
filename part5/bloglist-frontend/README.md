@@ -14,6 +14,7 @@ The application allows users to:
 * Delete blog posts they created
 * See blogs sorted by likes
 * See success and error notifications for user actions
+* Run component tests for blog rendering and blog creation form behavior
 
 It demonstrates:
 
@@ -31,6 +32,7 @@ It demonstrates:
 * Splitting UI into reusable components
 * Configuring a Vite development proxy for backend requests
 * Enforcing code style with ESLint
+* Testing React components with Vitest and Testing Library
 
 ## Notifications
 
@@ -55,6 +57,25 @@ The blog list includes the following UI behavior:
 * Each blog entry has its own `view` or `hide` toggle for details
 * The `remove` button is shown only for blogs created by the logged-in user
 * Blogs are kept sorted in descending order by like count
+
+## Testing
+
+The frontend includes component tests for:
+
+* The default collapsed blog view
+* Showing blog details after clicking `view`
+* Calling the like handler twice when the like button is clicked twice
+* Submitting the new blog form with the correct title, author, and URL
+
+Run the tests with:
+
+```bash
+# Run the test suite
+npm run test
+
+# Run the test suite with coverage
+npm test -- --coverage
+```
 
 ## Backend
 
@@ -94,11 +115,16 @@ npm run dev
 
 ## Available scripts
 
-```bash
-npm run dev
-npm run build
-npm run preview
-npm run lint
-```
+* `npm run dev` starts the Vite development server
+* `npm run build` creates a production build
+* `npm run preview` previews the production build locally
+* `npm run lint` runs ESLint
+* `npm run test` runs the Vitest test suite
+* `npm test -- --coverage` runs the test suite and prints coverage results
 
-Built with React, Vite, and Axios for learning purposes.
+Use only one test command at a time:
+
+* `npm run test` for a normal test run
+* `npm test -- --coverage` when you want coverage output
+
+Built with React, Vite, Vitest, Testing Library, and Axios for learning purposes.
