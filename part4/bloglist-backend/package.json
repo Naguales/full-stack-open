@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
+    "dev:test": "cross-env NODE_ENV=test node --watch index.js",
     "test": "cross-env NODE_ENV=test node --test --test-concurrency=1 --test-isolation=none",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
