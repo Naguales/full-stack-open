@@ -5,6 +5,7 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   const blogUserId = blog.user?.id || blog.user?._id || blog.user
   const currentUserId = currentUser?.id || currentUser?._id
   const canDelete = blogUserId === currentUserId
+  const canLike = currentUser !== null
 
   const blogStyle = {
     paddingTop: 10,
@@ -27,7 +28,9 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
           <div>{blog.url}</div>
           <div>
             likes {blog.likes}
-            <button type="button" onClick={() => handleLike(blog)}>like</button>
+            {canLike && (
+              <button type="button" onClick={() => handleLike(blog)}>like</button>
+            )}
           </div>
           <div>{blog.user?.name}</div>
           {canDelete && (

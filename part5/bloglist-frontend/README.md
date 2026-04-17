@@ -9,7 +9,8 @@ The application allows users to:
 * Keep the login session in local storage
 * Log out and clear persisted session data
 * Add new blogs while logged in
-* Open and close blog details per blog entry
+* Navigate between routed blog list, login, blog details, and blog creation views
+* Open a dedicated single-blog view from the blog list
 * Like blog posts
 * Delete blog posts they created
 * See blogs sorted by likes
@@ -25,6 +26,7 @@ It demonstrates:
 * Sending authenticated requests with a bearer token
 * Persisting login state with `localStorage`
 * Using `useEffect` for data fetching and restoring session state
+* Client-side routing with `react-router-dom`
 * Controlled form inputs
 * Component-local state for blog form inputs and blog detail visibility
 * Rendering dynamic lists
@@ -52,10 +54,14 @@ Behavior:
 
 The blog list includes the following UI behavior:
 
-* The create form is hidden by default and can be toggled open
-* The create form closes after a successful submission or when cancelled
-* Each blog entry has its own `view` or `hide` toggle for details
+* The root route `/` shows the list of all blogs
+* The `/login` route shows the login form
+* The `/blogs/:id` route shows a single blog view
+* The `/blogs/new` route shows the blog creation form for logged-in users
+* Creating a blog redirects back to the all blogs view
+* Deleting a blog redirects back to the all blogs view
 * The `remove` button is shown only for blogs created by the logged-in user
+* The `like` button is shown only to logged-in users
 * Blogs are kept sorted in descending order by like count
 
 ## Testing
