@@ -1,6 +1,12 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 
 describe('Blog app', () => {
+  const expectLoggedIn = async (page) => {
+    await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Create New' })).toBeVisible()
+    await expect(page).toHaveURL('http://localhost:5173/')
+  }
+
   const loginWith = async (page, username, password) => {
     await page.goto('/login')
     await page.locator('input[name="Username"]').fill(username)
@@ -9,10 +15,12 @@ describe('Blog app', () => {
   }
 
   const createBlog = async (page, title, author, url) => {
-    await page.goto('/blogs/new')
-    await page.locator('input[name="Title"]').fill(title)
-    await page.locator('input[name="Author"]').fill(author)
-    await page.locator('input[name="Url"]').fill(url)
+    await page.getByRole('link', { name: 'Create New' }).click()
+    await expect(page).toHaveURL('http://localhost:5173/blogs/new')
+    await expect(page.getByRole('heading', { name: 'create new' })).toBeVisible()
+    await page.getByLabel('Title').fill(title)
+    await page.getByLabel('Author').fill(author)
+    await page.getByLabel('Url').fill(url)
     await page.getByRole('button', { name: 'create' }).click()
   }
 
@@ -38,22 +46,22 @@ describe('Blog app', () => {
   test('login succeeds with correct credentials', async ({ page }) => {
     await loginWith(page, 'mluukkai', 'salainen')
 
-    await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
-    await expect(page).toHaveURL('http://localhost:5173/')
+    await expectLoggedIn(page)
   })
 
   test('login fails with wrong credentials', async ({ page }) => {
     await loginWith(page, 'mluukkai', 'wrong')
 
-    await expect(page.locator('.notification.error')).toContainText('wrong username or password')
-    await expect(page.getByText('Matti Luukkainen logged in')).not.toBeVisible()
+    await expect(page.getByRole('alert')).toContainText('wrong username or password')
+    await expect(page.getByRole('button', { name: 'Logout' })).toHaveCount(0)
+    await expect(page.getByRole('link', { name: 'Create New' })).toHaveCount(0)
     await expect(page).toHaveURL('http://localhost:5173/login')
   })
 
   describe('when logged in', () => {
     beforeEach(async ({ page }) => {
       await loginWith(page, 'mluukkai', 'salainen')
-      await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
+      await expectLoggedIn(page)
     })
 
     test('a user can create a blog', async ({ page }) => {
