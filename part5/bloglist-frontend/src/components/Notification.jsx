@@ -1,12 +1,14 @@
+import Alert from '@mui/material/Alert'
+
 const Notification = ({ notification }) => {
   if (!notification) {
     return null
   }
 
   return (
-    <div className={`notification ${notification.type}`}>
+    <Alert severity={notification.type} variant="filled" sx={{ mb: 3, alignItems: 'center', borderRadius: 2 }}>
       {notification.message}
-    </div>
+    </Alert>
   )
 }
 

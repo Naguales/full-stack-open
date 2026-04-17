@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link, Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { Link as RouterLink, Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { AppBar, Box, Button, Chip, Container, Divider, Paper, Stack, TextField, Toolbar, Typography } from '@mui/material'
 import './index.css'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
@@ -150,45 +151,58 @@ const App = () => {
     }
 
     return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification notification={notification} />
+      <Paper sx={{ maxWidth: 440, p: 4, mt: 4, borderRadius: 4, border: 1, borderColor: 'divider' }}>
+        <Typography component="h2" variant="h5" sx={{ mb: 3, color: 'text.primary', fontWeight: 700 }}>
+          Log in to application
+        </Typography>
         <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
+          <Stack spacing={2.5}>
+            <TextField
+              label="Username"
               type="text"
               value={username}
               name="Username"
               onChange={({ target }) => setUsername(target.value)}
+              fullWidth
+              color="primary"
             />
-          </div>
-          <div>
-            password
-            <input
+            <TextField
+              label="Password"
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
+              fullWidth
+              color="primary"
             />
-          </div>
-          <button type="submit">login</button>
+            <Button type="submit" variant="contained" sx={{ alignSelf: 'flex-start' }}>
+              login
+            </Button>
+          </Stack>
         </form>
-      </div>
+      </Paper>
     )
   }
 
   const blogList = () => (
-    <div>
-      <h2>blogs</h2>
+    <Box>
+      <Typography component="h2" variant="h4" sx={{ mb: 3, fontWeight: 700, color: 'text.primary' }}>
+        Blogs
+      </Typography>
       {blogs.map(blog =>
-        <div key={blog.id}>
-          <Link to={`/blogs/${blog.id}`}>
+        <Box key={blog.id} sx={{ mb: 1.5 }}>
+          <Button
+            component={RouterLink}
+            to={`/blogs/${blog.id}`}
+            variant="text"
+            color="primary"
+            sx={{ p: 0, textTransform: 'none', fontSize: '1rem', fontWeight: 500 }}
+          >
             {blog.title} by {blog.author}
-          </Link>
-        </div>
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   )
 
   const BlogView = () => {
@@ -204,20 +218,97 @@ const App = () => {
     const canDelete = blogUserId === currentUserId
 
     return (
-      <div>
-        <h2>{blog.title} by {blog.author}</h2>
-        <div>{blog.url}</div>
-        <div>
-          likes {blog.likes}
-          {user !== null && (
-            <button type="button" onClick={() => handleLike(blog)}>like</button>
-          )}
-        </div>
-        <div>{blog.user?.name}</div>
+      <Paper
+        sx={{
+          maxWidth: 760,
+          mt: 2,
+          overflow: 'hidden',
+          borderRadius: 4,
+          border: 1,
+          borderColor: 'divider',
+        }}
+      >
+        <Box
+          sx={{
+            px: 4,
+            py: 4,
+            bgcolor: 'primary.main',
+            color: 'common.white',
+          }}
+        >
+          <Typography component="h2" variant="h4" sx={{ fontWeight: 800, lineHeight: 1.15, color: 'common.white' }}>
+            {blog.title}
+          </Typography>
+          <Typography sx={{ mt: 1, color: 'common.white', opacity: 0.92, fontSize: '1.05rem', fontWeight: 500 }}>
+            by {blog.author}
+          </Typography>
+        </Box>
+
+        <Stack spacing={3} sx={{ p: 4 }}>
+          <Box>
+            <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: 1.2 }}>
+              Source
+            </Typography>
+            <Typography
+              component="a"
+              href={blog.url}
+              target="_blank"
+              rel="noreferrer"
+              sx={{
+                display: 'block',
+                mt: 0.5,
+                color: 'primary.main',
+                textDecoration: 'none',
+                wordBreak: 'break-word',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
+              {blog.url}
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
+            <Chip
+              label={`Likes ${blog.likes}`}
+              color="primary"
+              variant="outlined"
+              sx={{
+                fontWeight: 700,
+                borderRadius: 1,
+                bgcolor: 'rgba(0, 98, 255, 0.06)',
+                height: 36,
+                '& .MuiChip-label': {
+                  px: 1.75,
+                },
+              }}
+            />
+            {user !== null && (
+              <Button type="button" variant="contained" onClick={() => handleLike(blog)} sx={{ borderRadius: 1, minHeight: 36 }}>
+                like
+              </Button>
+            )}
+          </Stack>
+
+          <Box>
+            <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: 1.2 }}>
+              Added by
+            </Typography>
+            <Typography sx={{ mt: 0.5, fontWeight: 500 }}>
+              {blog.user?.name}
+            </Typography>
+          </Box>
+        </Stack>
+
         {canDelete && (
-          <button type="button" onClick={() => handleDelete(blog)}>remove</button>
+          <Box sx={{ px: 4, pb: 4 }}>
+            <Button type="button" variant="outlined" color="error" onClick={() => handleDelete(blog)}>
+              remove
+            </Button>
+          </Box>
         )}
-      </div>
+      </Paper>
     )
   }
 
@@ -227,43 +318,52 @@ const App = () => {
     }
 
     return (
-      <div>
-        <h2>create new</h2>
+      <Paper sx={{ maxWidth: 560, p: 4, mt: 4, borderRadius: 4, border: 1, borderColor: 'divider' }}>
+        <Typography component="h2" variant="h5" sx={{ mb: 3, color: 'text.primary', fontWeight: 700 }}>
+          create new
+        </Typography>
         <BlogForm createBlog={addBlog} onCancel={() => navigate('/')} />
-      </div>
+      </Paper>
     )
   }
 
   return (
-    <div>
-      <Notification notification={notification} />
-      <nav>
-        <Link to="/">blogs</Link>
-        {' '}
-        {user === null && (
-          <>
-            <Link to="/login">login</Link>
-            {' '}
-          </>
-        )}
-        {user !== null && (
-          <>
-            <Link to="/blogs/new">create new</Link>
-            {' '}
-          </>
-        )}
-        {user !== null && (
-          <button type="button" onClick={handleLogout}>logout</button>
-        )}
-      </nav>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <AppBar position="static" elevation={0} sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'primary.dark', color: 'common.white' }}>
+        <Toolbar sx={{ gap: 1.5 }}>
+          <Button component={RouterLink} to="/" color="inherit" sx={{ textTransform: 'uppercase', fontWeight: 700 }}>
+            Blogs
+          </Button>
+          {user === null && (
+            <Button component={RouterLink} to="/login" color="inherit" sx={{ textTransform: 'uppercase' }}>
+              Login
+            </Button>
+          )}
+          {user !== null && (
+            <Button component={RouterLink} to="/blogs/new" color="inherit" sx={{ textTransform: 'uppercase' }}>
+              Create New
+            </Button>
+          )}
+          <Box sx={{ flexGrow: 1 }} />
+          {user !== null && (
+            <Button type="button" variant="outlined" color="inherit" onClick={handleLogout} sx={{ textTransform: 'uppercase' }}>
+              Logout
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
 
-      <Routes>
-        <Route path="/" element={blogList()} />
-        <Route path="/blogs/:id" element={<BlogView />} />
-        <Route path="/blogs/new" element={blogCreationView()} />
-        <Route path="/login" element={loginForm()} />
-      </Routes>
-    </div>
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Notification notification={notification} />
+
+        <Routes>
+          <Route path="/" element={blogList()} />
+          <Route path="/blogs/:id" element={<BlogView />} />
+          <Route path="/blogs/new" element={blogCreationView()} />
+          <Route path="/login" element={loginForm()} />
+        </Routes>
+      </Container>
+    </Box>
   )
 }
 
