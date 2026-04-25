@@ -1,16 +1,36 @@
-import { useAnecdoteActions, useAnecdotes } from '../store'
+import { useAnecdoteActions, useAnecdotes, useFilter } from '../store'
+import { useNotificationActions } from '../notificationStore'
 
 const AnecdoteList = () => {
   const anecdotes = useAnecdotes()
-  const { voteAnecdote } = useAnecdoteActions()
-  const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)
+  const filter = useFilter()
+  const { removeAnecdote, voteAnecdote } = useAnecdoteActions()
+  const { showNotification } = useNotificationActions()
+  const filteredAndSortedAnecdotes = anecdotes
+    .filter((anecdote) =>
+      anecdote.content.toLowerCase().includes(filter.toLowerCase())
+    )
+    .toSorted((a, b) => b.votes - a.votes)
 
-  return sortedAnecdotes.map((anecdote) => (
+  const handleVote = async (anecdote) => {
+    await voteAnecdote(anecdote.id)
+    showNotification(`you voted '${anecdote.content}'`)
+  }
+
+  const handleDelete = async (anecdote) => {
+    await removeAnecdote(anecdote.id)
+    showNotification(`you deleted '${anecdote.content}'`)
+  }
+
+  return filteredAndSortedAnecdotes.map((anecdote) => (
     <div key={anecdote.id}>
       <div>{anecdote.content}</div>
       <div>
         has {anecdote.votes}
-        <button onClick={() => voteAnecdote(anecdote.id)}>vote</button>
+        <button onClick={() => handleVote(anecdote)}>vote</button>
+        {anecdote.votes === 0 && (
+          <button onClick={() => handleDelete(anecdote)}>delete</button>
+        )}
       </div>
     </div>
   ))

@@ -2,20 +2,24 @@
 
 This project contains the **Anecdotes** exercises from Part 6 of the Full Stack Open course.
 
-The app displays a list of software engineering anecdotes, allows users to vote for them, and lets users add new anecdotes. Anecdotes are kept in descending order by number of votes.
+The app displays software engineering anecdotes, allows users to vote for them, add new ones, filter the list, and delete anecdotes that still have zero votes. Anecdotes are fetched from and persisted to a JSON Server backend, and the list is kept in descending order by votes.
 
 It demonstrates:
 
 - Managing shared state with Zustand
-- Updating application state immutably
+- Using a separate Zustand store for notifications
+- Fetching and persisting data with the Fetch API
 - Splitting UI into focused React components
-- Sorting derived data for rendering
+- Sorting and filtering derived data for rendering
 
 ## Run the project
 
 ```bash
 npm install
+npx json-server --port 3001 --watch db.json
 npm run dev
 ```
 
-Built with React, Zustand, and Vite for learning purposes.
+Start JSON Server first, then run the Vite development server in a separate terminal.
+
+Built with React, Zustand, Vite, and JSON Server for learning purposes.
