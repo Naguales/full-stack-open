@@ -25,7 +25,8 @@ const createAnecdote = async (content) => {
   })
 
   if (!response.ok) {
-    throw new Error('failed to create anecdote')
+    const errorData = await response.json()
+    throw new Error(errorData.error ?? 'failed to create anecdote')
   }
 
   return response.json()
@@ -55,7 +56,7 @@ export const useAnecdotes = () =>
     refetchOnWindowFocus: false,
   })
 
-export const useCreateAnecdote = () => {
+export const useCreateAnecdote = ({ onSuccess, onError } = {}) => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -63,11 +64,15 @@ export const useCreateAnecdote = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes']) ?? []
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+      onSuccess?.(newAnecdote)
+    },
+    onError: (error) => {
+      onError?.(error)
     },
   })
 }
 
-export const useVoteAnecdote = () => {
+export const useVoteAnecdote = (onSuccess) => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -80,6 +85,7 @@ export const useVoteAnecdote = () => {
           anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
         )
       )
+      onSuccess?.(updatedAnecdote)
     },
   })
 }

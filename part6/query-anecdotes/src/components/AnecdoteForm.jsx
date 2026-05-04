@@ -1,7 +1,16 @@
+import { useNotify } from '../NotificationContext'
 import { useCreateAnecdote } from '../hooks/useAnecdotes'
 
 const AnecdoteForm = () => {
-  const newAnecdoteMutation = useCreateAnecdote()
+  const notify = useNotify()
+  const newAnecdoteMutation = useCreateAnecdote({
+    onSuccess: (newAnecdote) => {
+      notify(`anecdote '${newAnecdote.content}' created`)
+    },
+    onError: (error) => {
+      notify(error.message)
+    },
+  })
 
   const onCreate = (event) => {
     event.preventDefault()
