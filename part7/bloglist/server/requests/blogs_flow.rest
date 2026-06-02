@@ -1,0 +1,18 @@
+@port = {{$dotenv PORT}}
+@mongoUri = {{$dotenv MONGODB_URI}}
+@baseUrl = http://localhost:{{port}}
+
+### Create a blog
+# MONGODB_URI is used by the backend process from .env when the server starts.
+POST {{baseUrl}}/api/blogs
+Content-Type: application/json
+
+{
+  "title": "REST Client blog example",
+  "author": "VS Code REST Client",
+  "url": "https://marketplace.visualstudio.com/items?itemName=humao.rest-client",
+  "likes": 1
+}
+
+### Fetch all blogs
+GET {{baseUrl}}/api/blogs

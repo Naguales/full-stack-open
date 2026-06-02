@@ -1,0 +1,11 @@
+node_modules
+client/node_modules
+server/node_modules
+client/dist
+client/coverage
+client/test-results
+server/coverage
+package-lock.json
+client/package-lock.json
+server/package-lock.json
+*.log
